@@ -1,27 +1,23 @@
-import React from "react";
-import { v1 as uuid } from "uuid";
-import { BrowserRouter, Route } from "react-router-dom";
+import React from 'react';
 
-import { NoteModel } from "../model/NoteModel";
-import { NoteService } from "../services/NoteService";
+import { v1 as uuid } from 'uuid';
 
-import AppBar from "../components/AppBar";
-import NavigationDrawer from "../components/NavigationDrawer";
-import About from "./About";
-import Notes from "./Notes";
+import NotesContext from './NotesContext';
 
-interface State {
+import { NoteModel } from '../../model/NoteModel';
+import { NoteService } from '../../services/NoteService';
+
+export interface Props {}
+export interface State {
   notes: NoteModel[];
-  isMenuOpen: boolean;
   isLoading: boolean;
   isReloadError: boolean;
   isSaveError: boolean;
 }
 
-class App extends React.Component<any, State> {
+export default class NotesProvider extends React.Component<Props, State> {
   state: State = {
     notes: [],
-    isMenuOpen: false,
     isLoading: false,
     isReloadError: false,
     isSaveError: false
@@ -47,7 +43,7 @@ class App extends React.Component<any, State> {
     this.setState(prevState => {
       const newNotes = prevState.notes.slice();
       const removedNote = newNotes.splice(index, 1)[0];
-      if (direction === "up") {
+      if (direction === 'up') {
         newNotes.splice(index - 1, 0, removedNote);
       } else {
         newNotes.splice(index + 1, 0, removedNote);
@@ -99,60 +95,23 @@ class App extends React.Component<any, State> {
       });
   };
 
-  handleOpenMenu = () => {
-    this.setState({ isMenuOpen: true });
-  };
-  handleCloseMenu = () => {
-    this.setState({ isMenuOpen: false });
-  };
-
-  render() {
-    const {
-      notes,
-      isLoading,
-      isReloadError,
-      isSaveError,
-      isMenuOpen
-    } = this.state;
+  public render() {
     return (
-      <BrowserRouter>
-        <div>
-          <AppBar
-            isLoading={isLoading}
-            isSaveError={isSaveError}
-            saveRetry={() => {
-              this.handleSave(notes);
-            }}
-            onOpenMenu={this.handleOpenMenu}
-          />
-          <div className="container">
-            <React.Fragment>
-              <Route
-                path="/"
-                exact
-                render={() => (
-                  <Notes
-                    notes={notes}
-                    isReloaError={isReloadError}
-                    onRetry={this.handleReload}
-                    onAddNote={this.handleAddNote}
-                    onMove={this.handleMove}
-                    onDelete={this.handleDelete}
-                    onEdit={this.handleEdit}
-                  />
-                )}
-              />
-              <Route path="/about" component={About} />
-            </React.Fragment>
-          </div>
-          <NavigationDrawer
-            isOpen={isMenuOpen}
-            onCloseMenu={this.handleCloseMenu}
-          />
-        </div>
-      </BrowserRouter>
+      <NotesContext.Provider
+        value={{
+          ...this.state,
+          onSaveRetry: () => {
+            this.handleSave(this.state.notes);
+          },
+          onRetry: this.handleReload,
+          onAddNote: this.handleAddNote,
+          onMove: this.handleMove,
+          onDelete: this.handleDelete,
+          onEdit: this.handleEdit
+        }}
+      >
+        {this.props.children}
+      </NotesContext.Provider>
     );
   }
 }
-
-export default App;

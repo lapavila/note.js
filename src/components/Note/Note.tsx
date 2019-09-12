@@ -1,7 +1,9 @@
-import React from "react";
-import classNames from "classnames";
+import React from 'react';
+import classNames from 'classnames';
 
-import { NoteModel } from "../model/NoteModel";
+import './note.scss';
+
+import { NoteModel } from '../../model/NoteModel';
 
 interface Props {
   note: NoteModel;
@@ -99,22 +101,22 @@ class Note extends React.Component<Props, State> {
         </button>
 
         <button
-          className={classNames("note__button", {
-            "note__button--hidden": index === 0
+          className={classNames('note__button', {
+            'note__button--hidden': index === 0
           })}
           onClick={() => {
-            onMove("up", index);
+            onMove('up', index);
           }}
         >
           <i className="material-icons">arrow_upward</i>
         </button>
 
         <button
-          className={classNames("note__button", {
-            "note__button--hidden": index === total - 1
+          className={classNames('note__button', {
+            'note__button--hidden': index === total - 1
           })}
           onClick={() => {
-            onMove("down", index);
+            onMove('down', index);
           }}
         >
           <i className="material-icons">arrow_downward</i>

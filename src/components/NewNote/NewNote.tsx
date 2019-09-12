@@ -1,4 +1,6 @@
-import React from "react";
+import React from 'react';
+
+import './new-note.scss';
 
 interface Props {
   onAddNote: any;
@@ -10,7 +12,7 @@ interface State {
 
 class NewNote extends React.Component<Props, State> {
   state: State = {
-    text: ""
+    text: ''
   };
   render() {
     const { onAddNote } = this.props;
@@ -28,10 +30,10 @@ class NewNote extends React.Component<Props, State> {
             });
           }}
           onKeyPress={event => {
-            if (event.key === "Enter") {
+            if (event.key === 'Enter') {
               onAddNote(this.state.text);
               this.setState({
-                text: ""
+                text: ''
               });
             }
           }}

@@ -1,9 +1,9 @@
-import React from "react";
+import React from 'react';
 
-import NewNote from "../components/NewNote";
-import NoteList from "../components/NoteList";
-import Error from "../components/Error";
-import { NoteModel } from "../model/NoteModel";
+import { Error, NoteList, NewNote } from '../../components';
+import withNotes from './withNotes';
+
+import { NoteModel } from '../../model/NoteModel';
 
 interface Props {
   isReloaError: boolean;
@@ -14,7 +14,8 @@ interface Props {
   onDelete: any;
   onEdit: any;
 }
-const Notes: React.FC<Props> = props => {
+
+const NotesPage: React.FC<Props> = props => {
   if (props.isReloaError) {
     return <Error onRetry={props.onRetry} />;
   }
@@ -32,4 +33,4 @@ const Notes: React.FC<Props> = props => {
   );
 };
 
-export default Notes;
+export default withNotes(NotesPage);

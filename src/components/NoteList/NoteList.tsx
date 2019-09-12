@@ -1,7 +1,9 @@
-import React from "react";
+import React from 'react';
 
-import Note from "./Note";
-import { NoteModel } from "../model/NoteModel";
+import './note-list.scss';
+
+import Note from '../Note/Note';
+import { NoteModel } from '../../model/NoteModel';
 
 interface Props {
   notes: NoteModel[];

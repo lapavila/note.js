@@ -1,16 +1,19 @@
-import React from "react";
+import React from 'react';
+import withSettings from '../../containers/Settings/withSettings';
+import './app-bar.scss';
 
 interface Props {
-  isLoading: boolean;
-  isSaveError: boolean;
-  saveRetry: any;
+  isLoading: boolean | undefined;
+  isSaveError: boolean | undefined;
+  onSaveRetry: any;
   onOpenMenu: any;
+  theme?: any;
 }
 
 const AppBar: React.FC<Props> = props => {
-  const { isLoading, isSaveError, saveRetry, onOpenMenu } = props;
+  const { isLoading, isSaveError, onSaveRetry, onOpenMenu, theme } = props;
   return (
-    <div className="app-bar">
+    <div className="app-bar" style={theme && theme.navBar}>
       <div className="app-bar__container">
         <button className="app-bar__action" onClick={onOpenMenu}>
           <i className="material-icons">menu</i>
@@ -24,7 +27,7 @@ const AppBar: React.FC<Props> = props => {
         {isSaveError && (
           <button
             className="app-bar__action app-bar__action--danger"
-            onClick={saveRetry}
+            onClick={onSaveRetry}
           >
             <i className="material-icons">cloud_off</i>
           </button>
@@ -34,4 +37,4 @@ const AppBar: React.FC<Props> = props => {
   );
 };
 
-export default AppBar;
+export default withSettings(AppBar);
